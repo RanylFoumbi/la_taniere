@@ -5,15 +5,14 @@ import 'package:la_taniere/ui/screens/matchs/match_view.dart';
 import 'package:la_taniere/utilities/colors.dart';
 import 'package:stacked/stacked.dart';
 
+import '../actuality/actuality_view.dart';
 import '../home/home_view.dart';
 
 class BigContainerViewModel extends ChangeNotifier {
   List<Widget> _tabList = [
     const HomeView(),
     const MatchView(),
-    Container(
-      color: YELLOW_COLOR,
-    ),
+    const ActualityView(),
     Container(
       color: RED_COLOR,
     ),

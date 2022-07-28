@@ -3,7 +3,7 @@ import 'package:la_taniere/utilities/colors.dart';
 
 const xsmallGray2 = TextStyle(
     color: GRAY_DEGRADE_2_COLOR,
-    fontSize: 9.5,
+    fontSize: 8.5,
     fontFamily: 'Poppins-light',
     overflow: TextOverflow.ellipsis);
 const smallText = TextStyle(
@@ -13,6 +13,6 @@ const smallText = TextStyle(
     overflow: TextOverflow.ellipsis);
 const titleText = TextStyle(
     color: WHITE_COLOR,
-    fontSize: 13,
+    fontSize: 14,
     fontFamily: 'Poppins-semiBold',
     overflow: TextOverflow.ellipsis);

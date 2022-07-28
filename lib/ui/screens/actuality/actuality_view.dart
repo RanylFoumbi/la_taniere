@@ -3,28 +3,23 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:la_taniere/ui/components/post_tweet_list.dart';
-import 'package:la_taniere/ui/components/product_list.dart';
-import 'package:la_taniere/ui/components/tag_button_list.dart';
 import 'package:la_taniere/utilities/colors.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../utilities/utilities.dart';
-import '../../components/event_card.dart';
-import '../../components/home_slider.dart';
-import '../../components/match_list.dart';
-import 'home_viewmodel.dart';
+import 'actuality_viewmodel.dart';
 
-class HomeView extends StatelessWidget {
-  const HomeView({Key? key}) : super(key: key);
+class ActualityView extends StatelessWidget {
+  const ActualityView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     Size _screenSize = MediaQuery.of(context).size;
-    return ViewModelBuilder<HomeViewModel>.reactive(
-        viewModelBuilder: () => HomeViewModel(),
-        onDispose: (HomeViewModel viewModel) {
+    return ViewModelBuilder<ActualityViewModel>.reactive(
+        viewModelBuilder: () => ActualityViewModel(),
+        onModelReady: (ActualityViewModel viewModel) {},
+        onDispose: (ActualityViewModel viewModel) {
           viewModel.listViewScrollController.dispose();
         },
         builder: (context, viewModel, child) {
@@ -35,7 +30,7 @@ class HomeView extends StatelessWidget {
                 automaticallyImplyLeading: false,
                 title: Container(
                     padding: const EdgeInsetsDirectional.only(end: 8),
-                    child: Utilities().headerBuilder(0)),
+                    child: Utilities().headerBuilder(2)),
                 backgroundColor: BACKGROUND_COLOR,
               ),
               preferredSize: viewModel.showHeader == true
@@ -48,16 +43,16 @@ class HomeView extends StatelessWidget {
               color: BACKGROUND_COLOR,
               child: NotificationListener<ScrollNotification>(
                 onNotification: (ScrollNotification scrollNotification) {
-                  print('inside home the onNotification');
+                  print('inside actuality the onNotification');
                   if (viewModel.listViewScrollController.position
                           .userScrollDirection ==
                       ScrollDirection.forward) {
-                    print('home scrolled up');
+                    print('match scrolled up');
                     viewModel.showHeader = true;
                   } else if (viewModel.listViewScrollController.position
                           .userScrollDirection ==
                       ScrollDirection.reverse) {
-                    print('home scrolled down');
+                    print('match scrolled down');
                     viewModel.showHeader = false;
                   }
                   return true;
@@ -67,111 +62,15 @@ class HomeView extends StatelessWidget {
                   controller: viewModel.listViewScrollController,
                   shrinkWrap: true,
                   children: [
-                    HomeSlider(screenSize: _screenSize, viewModel: viewModel),
                     Container(
-                      margin: const EdgeInsets.symmetric(vertical: 25),
-                      height: 40,
-                      child: TagButtonList(
-                          scrollController:
-                              viewModel.tagButtonListScroolController,
-                          articles: viewModel.articles),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 17),
-                      margin: const EdgeInsets.only(bottom: 15),
-                      height: 40,
-                      child: Flex(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        direction: Axis.horizontal,
-                        children: const [
-                          AutoSizeText('Matchs à venir',
-                              maxLines: 2,
-                              style: TextStyle(
-                                fontFamily: "Poppins-bold",
-                                color: WHITE_COLOR,
-                                fontSize: 18,
-                              )),
-                          Spacer(),
-                          IconButton(
-                              onPressed: null,
-                              icon: Icon(Icons.arrow_forward_ios_outlined,
-                                  size: 20, color: WHITE_COLOR)),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 160,
-                      child: MatchList(
-                          isScored: false,
-                          scrollController: viewModel.matchListScroolController,
-                          matches: const ['1', '2', '3', '4']),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 17),
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
                       margin: const EdgeInsets.symmetric(vertical: 15),
                       height: 40,
                       child: Flex(
                         mainAxisAlignment: MainAxisAlignment.start,
                         direction: Axis.horizontal,
                         children: const [
-                          AutoSizeText('Les scores',
-                              maxLines: 2,
-                              style: TextStyle(
-                                fontFamily: "Poppins-bold",
-                                color: WHITE_COLOR,
-                                fontSize: 18,
-                              )),
-                          Spacer(),
-                          IconButton(
-                              onPressed: null,
-                              icon: Icon(Icons.arrow_forward_ios_outlined,
-                                  size: 20, color: WHITE_COLOR)),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 160,
-                      child: MatchList(
-                          isScored: true,
-                          scrollController: viewModel.postListScroolController,
-                          matches: const ['1', '2', '3', '4']),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 17),
-                      margin: const EdgeInsets.symmetric(vertical: 15),
-                      height: 40,
-                      child: Flex(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        direction: Axis.horizontal,
-                        children: const [
-                          AutoSizeText('Evenements',
-                              maxLines: 2,
-                              style: TextStyle(
-                                fontFamily: "Poppins-bold",
-                                color: WHITE_COLOR,
-                                fontSize: 18,
-                              )),
-                          Spacer(),
-                          IconButton(
-                              onPressed: null,
-                              icon: Icon(Icons.arrow_forward_ios_outlined,
-                                  size: 20, color: WHITE_COLOR)),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      width: _screenSize.width / 1.5,
-                      child: const EventCard(),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 17),
-                      margin: const EdgeInsets.symmetric(vertical: 15),
-                      height: 40,
-                      child: Flex(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        direction: Axis.horizontal,
-                        children: const [
-                          AutoSizeText('Posts & Tweets',
+                          AutoSizeText('Récent',
                               maxLines: 2,
                               style: TextStyle(
                                 fontFamily: "Poppins-bold",
@@ -189,19 +88,19 @@ class HomeView extends StatelessWidget {
                     SizedBox(
                       height: 260,
                       child: PostList(
-                          isActuality: false,
+                          isActuality: true,
                           scrollController: viewModel.postListScroolController,
                           posts: const ['1', '2', '3', '4']),
                     ),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 17),
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
                       margin: const EdgeInsets.symmetric(vertical: 15),
                       height: 40,
                       child: Flex(
                         mainAxisAlignment: MainAxisAlignment.start,
                         direction: Axis.horizontal,
                         children: const [
-                          AutoSizeText('Produits',
+                          AutoSizeText('Tendances',
                               maxLines: 2,
                               style: TextStyle(
                                 fontFamily: "Poppins-bold",
@@ -217,11 +116,41 @@ class HomeView extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      height: _screenSize.height / 3.8 + 100,
-                      child: ProductList(
-                          scrollController:
-                              viewModel.productListScroolController,
-                          products: const ['1', '2', '3', '4']),
+                      height: 260,
+                      child: PostList(
+                          isActuality: true,
+                          scrollController: viewModel.postListScroolController,
+                          posts: const ['1', '2', '3', '4']),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      margin: const EdgeInsets.symmetric(vertical: 15),
+                      height: 40,
+                      child: Flex(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        direction: Axis.horizontal,
+                        children: const [
+                          AutoSizeText('Pour vous',
+                              maxLines: 2,
+                              style: TextStyle(
+                                fontFamily: "Poppins-bold",
+                                color: WHITE_COLOR,
+                                fontSize: 18,
+                              )),
+                          Spacer(),
+                          IconButton(
+                              onPressed: null,
+                              icon: Icon(Icons.arrow_forward_ios_outlined,
+                                  size: 20, color: WHITE_COLOR)),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 260,
+                      child: PostList(
+                          isActuality: true,
+                          scrollController: viewModel.postListScroolController,
+                          posts: const ['1', '2', '3', '4']),
                     ),
                   ],
                 ),

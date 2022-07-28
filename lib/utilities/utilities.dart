@@ -174,6 +174,27 @@ class Utilities {
             )
           ],
         );
+      case 2:
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            const AutoSizeText("Actualité",
+                style: TextStyle(
+                  fontFamily: "Poppins-bold",
+                  color: WHITE_COLOR,
+                  fontSize: 22,
+                )),
+            const Spacer(),
+            GestureDetector(
+              onTap: () {},
+              child: const Icon(
+                Icons.bookmark_border,
+                color: WHITE_COLOR,
+                size: 27,
+              ),
+            )
+          ],
+        );
       default:
         return Row(
           mainAxisAlignment: MainAxisAlignment.end,

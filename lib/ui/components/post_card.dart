@@ -1,4 +1,5 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:la_taniere/utilities/colors.dart';
@@ -6,7 +7,8 @@ import 'package:la_taniere/utilities/text.dart';
 
 // ignore: must_be_immutable
 class PostCard extends StatelessWidget {
-  const PostCard({Key? key}) : super(key: key);
+  bool isActuality;
+  PostCard({Key? key, required this.isActuality}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,12 +32,12 @@ class PostCard extends StatelessWidget {
                         /*image: new NetworkImage("https//."),*/
                         fit: BoxFit.cover)),
                 width: _screenSize.width / 1.25,
-                height: _screenSize.height / 3.8,
+                height: 160,
                 child: Stack(
                   children: <Widget>[
                     Container(
                       width: _screenSize.width / 1.25,
-                      height: _screenSize.height / 3.8,
+                      height: 120,
                       padding: const EdgeInsets.only(
                           top: 14, left: 14.0, bottom: 4.0, right: 14.0),
                       child: Stack(
@@ -77,40 +79,45 @@ class PostCard extends StatelessWidget {
                     bottomLeft: Radius.circular(10),
                     bottomRight: Radius.circular(10)),
               ),
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
               child: Flex(
                 direction: Axis.vertical,
                 children: [
-                  const Flexible(
-                      flex: 3,
-                      child: Text(
-                        "Quand les lions indomptables du cameroun ont dominé...",
-                        style: titleText,
-                        textAlign: TextAlign.left,
-                        maxLines: 2,
-                      )),
+                  const AutoSizeText(
+                    "Quand les lions indomptables du cameroun ont dominé...",
+                    style: titleText,
+                    textAlign: TextAlign.left,
+                    maxLines: 2,
+                  ),
                   const Spacer(),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(10.0),
-                          child: SvgPicture.asset(
-                            'assets/icons/youtube.svg',
-                            color: RED_COLOR,
-                            height: 13.0,
-                            width: 13.0,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
+                        isActuality == true
+                            ? const Text('')
+                            : ClipRRect(
+                                borderRadius: BorderRadius.circular(10.0),
+                                child: SvgPicture.asset(
+                                  'assets/icons/youtube.svg',
+                                  color: RED_COLOR,
+                                  height: 13.0,
+                                  width: 13.0,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
                         const SizedBox(
                           width: 5,
                         ),
-                        const Text(
-                          'Youtube',
-                          style: xsmallGray2,
-                        ),
+                        isActuality == true
+                            ? const AutoSizeText(
+                                'Par Rodrigue Ntengue',
+                                style: xsmallGray2,
+                              )
+                            : const AutoSizeText(
+                                'Youtube',
+                                style: xsmallGray2,
+                              ),
                         const Padding(
                           padding: EdgeInsets.all(6.0),
                           child: Icon(
@@ -119,10 +126,15 @@ class PostCard extends StatelessWidget {
                             size: 4,
                           ),
                         ),
-                        const Text(
-                          "il y'a 2 min",
-                          style: xsmallGray2,
-                        ),
+                        isActuality == true
+                            ? const AutoSizeText(
+                                "Le 12-06-22",
+                                style: xsmallGray2,
+                              )
+                            : const AutoSizeText(
+                                "il y'a 2 min",
+                                style: xsmallGray2,
+                              ),
                       ]),
                 ],
               ),
