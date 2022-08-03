@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
+import '../ui/components/vertical_list.dart';
 import '../ui/screens/bigContainer/bigContainer_view.dart';
 import '../ui/screens/home/home_view.dart';
 import '../ui/screens/splash/splash_screen_view.dart';
@@ -19,10 +20,12 @@ class Routes {
   static const String splashScreenView = '/';
   static const String bigContainerView = '/big-container-view';
   static const String homeView = '/home-view';
+  static const String verticalListPage = '/vertical-list-page';
   static const all = <String>{
     splashScreenView,
     bigContainerView,
     homeView,
+    verticalListPage,
   };
 }
 
@@ -33,6 +36,7 @@ class StackedRouter extends RouterBase {
     RouteDef(Routes.splashScreenView, page: SplashScreenView),
     RouteDef(Routes.bigContainerView, page: BigContainerView),
     RouteDef(Routes.homeView, page: HomeView),
+    RouteDef(Routes.verticalListPage, page: VerticalListPage),
   ];
   @override
   Map<Type, StackedRouteFactory> get pagesMap => _pagesMap;
@@ -58,6 +62,16 @@ class StackedRouter extends RouterBase {
         settings: data,
       );
     },
+    VerticalListPage: (data) {
+      var args = data.getArgs<VerticalListPageArguments>(nullOk: false);
+      return CupertinoPageRoute<dynamic>(
+        builder: (context) => VerticalListPage(
+          key: args.key,
+          title: args.title,
+        ),
+        settings: data,
+      );
+    },
   };
 }
 
@@ -69,6 +83,13 @@ class StackedRouter extends RouterBase {
 class SplashScreenViewArguments {
   final Key? key;
   SplashScreenViewArguments({this.key});
+}
+
+/// VerticalListPage arguments holder class
+class VerticalListPageArguments {
+  final Key? key;
+  final String title;
+  VerticalListPageArguments({this.key, required this.title});
 }
 
 /// ************************************************************************
@@ -119,6 +140,25 @@ extension NavigatorStateExtension on NavigationService {
   }) async {
     return navigateTo(
       Routes.homeView,
+      id: routerId,
+      preventDuplicates: preventDuplicates,
+      parameters: parameters,
+      transition: transition,
+    );
+  }
+
+  Future<dynamic> navigateToVerticalListPage({
+    Key? key,
+    required String title,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return navigateTo(
+      Routes.verticalListPage,
+      arguments: VerticalListPageArguments(key: key, title: title),
       id: routerId,
       preventDuplicates: preventDuplicates,
       parameters: parameters,

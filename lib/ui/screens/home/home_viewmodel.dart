@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 class HomeViewModel extends ChangeNotifier {
   String _pageName = 'Home Page';
@@ -15,6 +16,7 @@ class HomeViewModel extends ChangeNotifier {
   ScrollController matchListScroolController = ScrollController();
   ScrollController postListScroolController = ScrollController();
   ScrollController productListScroolController = ScrollController();
+  NavigationService navigationService = NavigationService();
   List<String> _articles = [
     'FIFA',
     'FECAFOOT',

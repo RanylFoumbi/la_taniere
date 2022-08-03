@@ -3,6 +3,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:la_taniere/app/app.router.dart';
 import 'package:la_taniere/ui/components/post_tweet_list.dart';
 import 'package:la_taniere/utilities/colors.dart';
 import 'package:stacked/stacked.dart';
@@ -69,18 +70,56 @@ class ActualityView extends StatelessWidget {
                       child: Flex(
                         mainAxisAlignment: MainAxisAlignment.start,
                         direction: Axis.horizontal,
-                        children: const [
-                          AutoSizeText('Récent',
+                        children: [
+                          const AutoSizeText('Récents',
                               maxLines: 2,
                               style: TextStyle(
                                 fontFamily: "Poppins-bold",
                                 color: WHITE_COLOR,
                                 fontSize: 18,
                               )),
-                          Spacer(),
+                          const Spacer(),
                           IconButton(
-                              onPressed: null,
-                              icon: Icon(Icons.arrow_forward_ios_outlined,
+                              onPressed: () async => viewModel.navigationService
+                                  .navigateTo(Routes.verticalListPage,
+                                      arguments: VerticalListPageArguments(
+                                          title: "Récents")),
+                              icon: const SizedBox(
+                                child: Icon(Icons.arrow_forward_ios_outlined,
+                                    size: 20, color: WHITE_COLOR),
+                              )),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 260,
+                      child: PostList(
+                          isActuality: true,
+                          scrollController: viewModel.postListScroolController,
+                          posts: const ['1', '2', '3', '4']),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      margin: const EdgeInsets.symmetric(vertical: 15),
+                      height: 40,
+                      child: Flex(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        direction: Axis.horizontal,
+                        children: [
+                          const AutoSizeText('Tendances',
+                              maxLines: 2,
+                              style: TextStyle(
+                                fontFamily: "Poppins-bold",
+                                color: WHITE_COLOR,
+                                fontSize: 18,
+                              )),
+                          const Spacer(),
+                          IconButton(
+                              onPressed: () async => viewModel.navigationService
+                                  .navigateTo(Routes.verticalListPage,
+                                      arguments: VerticalListPageArguments(
+                                          title: "Tendances")),
+                              icon: const Icon(Icons.arrow_forward_ios_outlined,
                                   size: 20, color: WHITE_COLOR)),
                         ],
                       ),
@@ -99,48 +138,21 @@ class ActualityView extends StatelessWidget {
                       child: Flex(
                         mainAxisAlignment: MainAxisAlignment.start,
                         direction: Axis.horizontal,
-                        children: const [
-                          AutoSizeText('Tendances',
+                        children: [
+                          const AutoSizeText('Pour vous',
                               maxLines: 2,
                               style: TextStyle(
                                 fontFamily: "Poppins-bold",
                                 color: WHITE_COLOR,
                                 fontSize: 18,
                               )),
-                          Spacer(),
+                          const Spacer(),
                           IconButton(
-                              onPressed: null,
-                              icon: Icon(Icons.arrow_forward_ios_outlined,
-                                  size: 20, color: WHITE_COLOR)),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 260,
-                      child: PostList(
-                          isActuality: true,
-                          scrollController: viewModel.postListScroolController,
-                          posts: const ['1', '2', '3', '4']),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      margin: const EdgeInsets.symmetric(vertical: 15),
-                      height: 40,
-                      child: Flex(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        direction: Axis.horizontal,
-                        children: const [
-                          AutoSizeText('Pour vous',
-                              maxLines: 2,
-                              style: TextStyle(
-                                fontFamily: "Poppins-bold",
-                                color: WHITE_COLOR,
-                                fontSize: 18,
-                              )),
-                          Spacer(),
-                          IconButton(
-                              onPressed: null,
-                              icon: Icon(Icons.arrow_forward_ios_outlined,
+                              onPressed: () async => viewModel.navigationService
+                                  .navigateTo(Routes.verticalListPage,
+                                      arguments: VerticalListPageArguments(
+                                          title: "Pour vous")),
+                              icon: const Icon(Icons.arrow_forward_ios_outlined,
                                   size: 20, color: WHITE_COLOR)),
                         ],
                       ),

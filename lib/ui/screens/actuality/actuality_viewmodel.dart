@@ -1,6 +1,7 @@
-// ignore_for_file: prefer_final_fields, non_constant_identifier_names
+// ignore_for_file: prefer_final_fields, non_constant_identifier_names, prefer_is_empty
 
 import 'package:flutter/material.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 class ActualityViewModel extends ChangeNotifier {
   bool _showHeader = true;
@@ -8,6 +9,7 @@ class ActualityViewModel extends ChangeNotifier {
   List<int> _prevIndex = [];
   ScrollController listViewScrollController = ScrollController();
   ScrollController postListScroolController = ScrollController();
+  NavigationService navigationService = NavigationService();
 
   bool get showHeader => _showHeader;
   List<bool> get selectedDate => _selectedDate;
@@ -34,11 +36,5 @@ class ActualityViewModel extends ChangeNotifier {
     }
 
     print({"selectedDate": selectedDate});
-  }
-
-  @override
-  void onError(error) {
-    // print(error);
-    // setBusy(false);
   }
 }

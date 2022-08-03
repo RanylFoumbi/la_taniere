@@ -1,3 +1,4 @@
+import 'package:la_taniere/ui/components/vertical_list.dart';
 import 'package:la_taniere/ui/screens/home/home_view.dart';
 import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -10,6 +11,7 @@ import '../ui/screens/splash/splash_screen_view.dart';
     CupertinoRoute(page: SplashScreenView, initial: true),
     CupertinoRoute(page: BigContainerView),
     CupertinoRoute(page: HomeView),
+    CupertinoRoute(page: VerticalListPage),
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),

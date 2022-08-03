@@ -10,6 +10,7 @@ import 'package:la_taniere/ui/components/tag_button_list.dart';
 import 'package:la_taniere/utilities/colors.dart';
 import 'package:stacked/stacked.dart';
 
+import '../../../app/app.router.dart';
 import '../../../utilities/utilities.dart';
 import '../../components/event_card.dart';
 import '../../components/home_slider.dart';
@@ -83,18 +84,21 @@ class HomeView extends StatelessWidget {
                       child: Flex(
                         mainAxisAlignment: MainAxisAlignment.start,
                         direction: Axis.horizontal,
-                        children: const [
-                          AutoSizeText('Matchs à venir',
+                        children: [
+                          const AutoSizeText('Matchs à venir',
                               maxLines: 2,
                               style: TextStyle(
                                 fontFamily: "Poppins-bold",
                                 color: WHITE_COLOR,
                                 fontSize: 18,
                               )),
-                          Spacer(),
+                          const Spacer(),
                           IconButton(
-                              onPressed: null,
-                              icon: Icon(Icons.arrow_forward_ios_outlined,
+                              onPressed: () async => viewModel.navigationService
+                                  .navigateTo(Routes.verticalListPage,
+                                      arguments: VerticalListPageArguments(
+                                          title: "Matchs à venir")),
+                              icon: const Icon(Icons.arrow_forward_ios_outlined,
                                   size: 20, color: WHITE_COLOR)),
                         ],
                       ),
@@ -113,18 +117,21 @@ class HomeView extends StatelessWidget {
                       child: Flex(
                         mainAxisAlignment: MainAxisAlignment.start,
                         direction: Axis.horizontal,
-                        children: const [
-                          AutoSizeText('Les scores',
+                        children: [
+                          const AutoSizeText('Les scores',
                               maxLines: 2,
                               style: TextStyle(
                                 fontFamily: "Poppins-bold",
                                 color: WHITE_COLOR,
                                 fontSize: 18,
                               )),
-                          Spacer(),
+                          const Spacer(),
                           IconButton(
-                              onPressed: null,
-                              icon: Icon(Icons.arrow_forward_ios_outlined,
+                              onPressed: () async => viewModel.navigationService
+                                  .navigateTo(Routes.verticalListPage,
+                                      arguments: VerticalListPageArguments(
+                                          title: "Les scores")),
+                              icon: const Icon(Icons.arrow_forward_ios_outlined,
                                   size: 20, color: WHITE_COLOR)),
                         ],
                       ),
@@ -143,18 +150,21 @@ class HomeView extends StatelessWidget {
                       child: Flex(
                         mainAxisAlignment: MainAxisAlignment.start,
                         direction: Axis.horizontal,
-                        children: const [
-                          AutoSizeText('Evenements',
+                        children: [
+                          const AutoSizeText('Evenements',
                               maxLines: 2,
                               style: TextStyle(
                                 fontFamily: "Poppins-bold",
                                 color: WHITE_COLOR,
                                 fontSize: 18,
                               )),
-                          Spacer(),
+                          const Spacer(),
                           IconButton(
-                              onPressed: null,
-                              icon: Icon(Icons.arrow_forward_ios_outlined,
+                              onPressed: () async => viewModel.navigationService
+                                  .navigateTo(Routes.verticalListPage,
+                                      arguments: VerticalListPageArguments(
+                                          title: "Evenements")),
+                              icon: const Icon(Icons.arrow_forward_ios_outlined,
                                   size: 20, color: WHITE_COLOR)),
                         ],
                       ),
@@ -170,8 +180,8 @@ class HomeView extends StatelessWidget {
                       child: Flex(
                         mainAxisAlignment: MainAxisAlignment.start,
                         direction: Axis.horizontal,
-                        children: const [
-                          AutoSizeText('Posts & Tweets',
+                        children: [
+                          const AutoSizeText('Posts & Tweets',
                               maxLines: 2,
                               style: TextStyle(
                                 fontFamily: "Poppins-bold",
@@ -180,8 +190,11 @@ class HomeView extends StatelessWidget {
                               )),
                           Spacer(),
                           IconButton(
-                              onPressed: null,
-                              icon: Icon(Icons.arrow_forward_ios_outlined,
+                              onPressed: () async => viewModel.navigationService
+                                  .navigateTo(Routes.verticalListPage,
+                                      arguments: VerticalListPageArguments(
+                                          title: "Posts & Tweets")),
+                              icon: const Icon(Icons.arrow_forward_ios_outlined,
                                   size: 20, color: WHITE_COLOR)),
                         ],
                       ),
@@ -200,18 +213,21 @@ class HomeView extends StatelessWidget {
                       child: Flex(
                         mainAxisAlignment: MainAxisAlignment.start,
                         direction: Axis.horizontal,
-                        children: const [
-                          AutoSizeText('Produits',
+                        children: [
+                          const AutoSizeText('Produits',
                               maxLines: 2,
                               style: TextStyle(
                                 fontFamily: "Poppins-bold",
                                 color: WHITE_COLOR,
                                 fontSize: 18,
                               )),
-                          Spacer(),
+                          const Spacer(),
                           IconButton(
-                              onPressed: null,
-                              icon: Icon(Icons.arrow_forward_ios_outlined,
+                              onPressed: () async => viewModel.navigationService
+                                  .navigateTo(Routes.verticalListPage,
+                                      arguments: VerticalListPageArguments(
+                                          title: "Produits")),
+                              icon: const Icon(Icons.arrow_forward_ios_outlined,
                                   size: 20, color: WHITE_COLOR)),
                         ],
                       ),
