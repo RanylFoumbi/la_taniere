@@ -37,6 +37,8 @@ dependencies:
   auto_size_text: ^3.0.0
   flutter_svg: ^1.1.1+1
   font_awesome_flutter: ^10.1.0
+  http: ^0.13.5
+  image_stack: ^2.1.1
 
 
 

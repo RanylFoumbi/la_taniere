@@ -3,14 +3,11 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:la_taniere/ui/components/post_tweet_list.dart';
-import 'package:la_taniere/ui/components/product_list.dart';
-import 'package:la_taniere/ui/components/tag_button_list.dart';
 import 'package:la_taniere/ui/screens/matchs/match_viewmodel.dart';
 import 'package:la_taniere/utilities/colors.dart';
 import 'package:stacked/stacked.dart';
 
+import '../../../models/enum.dart';
 import '../../../utilities/utilities.dart';
 import '../../components/calendar.dart';
 import '../../components/match_card.dart';
@@ -40,7 +37,7 @@ class MatchView extends StatelessWidget {
                 automaticallyImplyLeading: false,
                 title: Container(
                     padding: const EdgeInsetsDirectional.only(end: 8),
-                    child: Utilities().headerBuilder(1)),
+                    child: Utilities().headerBuilder(PageHeader.MATCH)),
                 backgroundColor: BACKGROUND_COLOR,
               ),
               preferredSize: viewModel.showHeader == true

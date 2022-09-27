@@ -4,6 +4,8 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:la_taniere/ui/components/loader.dart';
+import 'package:la_taniere/ui/components/no_data.dart';
 import 'package:la_taniere/ui/components/post_tweet_list.dart';
 import 'package:la_taniere/ui/components/product_list.dart';
 import 'package:la_taniere/ui/components/tag_button_list.dart';
@@ -11,10 +13,12 @@ import 'package:la_taniere/utilities/colors.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../app/app.router.dart';
+import '../../../models/enum.dart';
 import '../../../utilities/utilities.dart';
 import '../../components/event_card.dart';
 import '../../components/home_slider.dart';
 import '../../components/match_list.dart';
+import '../../components/on_error.dart';
 import 'home_viewmodel.dart';
 
 class HomeView extends StatelessWidget {
@@ -25,6 +29,9 @@ class HomeView extends StatelessWidget {
     Size _screenSize = MediaQuery.of(context).size;
     return ViewModelBuilder<HomeViewModel>.reactive(
         viewModelBuilder: () => HomeViewModel(),
+        onModelReady: (HomeViewModel viewModel) {
+          viewModel.onInit();
+        },
         onDispose: (HomeViewModel viewModel) {
           viewModel.listViewScrollController.dispose();
         },
@@ -36,7 +43,7 @@ class HomeView extends StatelessWidget {
                 automaticallyImplyLeading: false,
                 title: Container(
                     padding: const EdgeInsetsDirectional.only(end: 8),
-                    child: Utilities().headerBuilder(0)),
+                    child: Utilities().headerBuilder(PageHeader.HOME)),
                 backgroundColor: BACKGROUND_COLOR,
               ),
               preferredSize: viewModel.showHeader == true
@@ -49,16 +56,16 @@ class HomeView extends StatelessWidget {
               color: BACKGROUND_COLOR,
               child: NotificationListener<ScrollNotification>(
                 onNotification: (ScrollNotification scrollNotification) {
-                  print('inside home the onNotification');
+                  // print('inside home the onNotification');
                   if (viewModel.listViewScrollController.position
                           .userScrollDirection ==
                       ScrollDirection.forward) {
-                    print('home scrolled up');
+                    // print('home scrolled up');
                     viewModel.showHeader = true;
                   } else if (viewModel.listViewScrollController.position
                           .userScrollDirection ==
                       ScrollDirection.reverse) {
-                    print('home scrolled down');
+                    // print('home scrolled down');
                     viewModel.showHeader = false;
                   }
                   return true;
@@ -75,7 +82,7 @@ class HomeView extends StatelessWidget {
                       child: TagButtonList(
                           scrollController:
                               viewModel.tagButtonListScroolController,
-                          articles: viewModel.articles),
+                          articles: viewModel.keywords),
                     ),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 17),
@@ -140,7 +147,7 @@ class HomeView extends StatelessWidget {
                       height: 160,
                       child: MatchList(
                           isScored: true,
-                          scrollController: viewModel.postListScroolController,
+                          scrollController: viewModel.matchListScroolController,
                           matches: const ['1', '2', '3', '4']),
                     ),
                     Container(
@@ -188,11 +195,14 @@ class HomeView extends StatelessWidget {
                                 color: WHITE_COLOR,
                                 fontSize: 18,
                               )),
-                          Spacer(),
+                          const Spacer(),
                           IconButton(
                               onPressed: () async => viewModel.navigationService
                                   .navigateTo(Routes.verticalListPage,
                                       arguments: VerticalListPageArguments(
+                                          data: PostList(
+                                              axis: Axis.vertical,
+                                              posts: viewModel.postList),
                                           title: "Posts & Tweets")),
                               icon: const Icon(Icons.arrow_forward_ios_outlined,
                                   size: 20, color: WHITE_COLOR)),
@@ -201,10 +211,15 @@ class HomeView extends StatelessWidget {
                     ),
                     SizedBox(
                       height: 260,
-                      child: PostList(
-                          isActuality: false,
-                          scrollController: viewModel.postListScroolController,
-                          posts: const ['1', '2', '3', '4']),
+                      child: viewModel.isBusy
+                          ? const Loader()
+                          : viewModel.hasError
+                              ? const OnError()
+                              : viewModel.postList.isEmpty
+                                  ? const NoData()
+                                  : PostList(
+                                      posts: viewModel.postList,
+                                      axis: Axis.horizontal),
                     ),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 17),
@@ -226,6 +241,9 @@ class HomeView extends StatelessWidget {
                               onPressed: () async => viewModel.navigationService
                                   .navigateTo(Routes.verticalListPage,
                                       arguments: VerticalListPageArguments(
+                                          data: ProductList(
+                                              axis: Axis.vertical,
+                                              products: viewModel.productList),
                                           title: "Produits")),
                               icon: const Icon(Icons.arrow_forward_ios_outlined,
                                   size: 20, color: WHITE_COLOR)),
@@ -233,11 +251,16 @@ class HomeView extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      height: _screenSize.height / 3.8 + 100,
-                      child: ProductList(
-                          scrollController:
-                              viewModel.productListScroolController,
-                          products: const ['1', '2', '3', '4']),
+                      height: _screenSize.height / 2,
+                      child: viewModel.isBusy
+                          ? const Loader()
+                          : viewModel.hasError
+                              ? const OnError()
+                              : viewModel.productList.isEmpty
+                                  ? const NoData()
+                                  : ProductList(
+                                      axis: Axis.horizontal,
+                                      products: viewModel.productList),
                     ),
                   ],
                 ),

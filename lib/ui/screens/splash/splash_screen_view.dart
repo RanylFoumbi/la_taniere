@@ -34,7 +34,10 @@ class SplashScreenView extends StatelessWidget {
                     const Center(
                         child: Text(
                       Utilities.APP_NAME,
-                      style: TextStyle(color: WHITE_COLOR),
+                      style: TextStyle(
+                        color: WHITE_COLOR,
+                        fontFamily: "Poppins-light",
+                      ),
                     )),
                     const SizedBox(
                       height: 25,

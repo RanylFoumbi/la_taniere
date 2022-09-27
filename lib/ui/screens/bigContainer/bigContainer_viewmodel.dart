@@ -3,9 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:la_taniere/ui/screens/matchs/match_view.dart';
 import 'package:la_taniere/utilities/colors.dart';
-import 'package:stacked/stacked.dart';
 
 import '../actuality/actuality_view.dart';
+import '../articles/articles_view.dart';
 import '../home/home_view.dart';
 
 class BigContainerViewModel extends ChangeNotifier {
@@ -13,9 +13,7 @@ class BigContainerViewModel extends ChangeNotifier {
     const HomeView(),
     const MatchView(),
     const ActualityView(),
-    Container(
-      color: RED_COLOR,
-    ),
+    const ArticlesView(),
     Container(
       color: GRAY_COLOR,
     ),

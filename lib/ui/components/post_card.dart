@@ -2,19 +2,30 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:la_taniere/models/article.dart';
 import 'package:la_taniere/utilities/colors.dart';
 import 'package:la_taniere/utilities/text.dart';
+import 'package:la_taniere/utilities/utilities.dart';
+import 'package:stacked_services/stacked_services.dart';
+
+import '../../app/app.router.dart';
 
 // ignore: must_be_immutable
 class PostCard extends StatelessWidget {
   bool isActuality;
-  PostCard({Key? key, required this.isActuality}) : super(key: key);
+  Article post;
+  PostCard({Key? key, required this.isActuality, required this.post})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    NavigationService navigationService = NavigationService();
     Size _screenSize = MediaQuery.of(context).size;
     return GestureDetector(
-        onTap: () {},
+        onTap: () {
+          navigationService.navigateTo(Routes.articleDetail,
+              arguments: ArticleDetailArguments(article: post));
+        },
         child: Flex(
           direction: Axis.vertical,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -28,8 +39,8 @@ class PostCard extends StatelessWidget {
                     image: DecorationImage(
                         colorFilter: ColorFilter.mode(
                             Colors.black.withOpacity(0.35), BlendMode.overlay),
-                        image: const AssetImage("assets/images/lion_team.jpeg"),
-                        /*image: new NetworkImage("https//."),*/
+                        image:
+                            NetworkImage(Utilities.ROOT_BASE_URL + post.image),
                         fit: BoxFit.cover)),
                 width: _screenSize.width / 1.25,
                 height: 160,
@@ -57,9 +68,9 @@ class PostCard extends StatelessWidget {
                                           color: GRAY_DEGRADE_2_COLOR,
                                           shape: BoxShape.circle),
                                       child: const Icon(
-                                        Icons.bookmark_sharp,
+                                        Icons.favorite,
                                         color: WHITE_COLOR,
-                                        size: 12,
+                                        size: 13,
                                       ),
                                     )),
                               ],
@@ -82,60 +93,82 @@ class PostCard extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
               child: Flex(
                 direction: Axis.vertical,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const AutoSizeText(
-                    "Quand les lions indomptables du cameroun ont dominé...",
+                  AutoSizeText(
+                    post.description,
                     style: titleText,
                     textAlign: TextAlign.left,
+                    overflow: TextOverflow.ellipsis,
                     maxLines: 2,
                   ),
                   const Spacer(),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        isActuality == true
-                            ? const Text('')
-                            : ClipRRect(
-                                borderRadius: BorderRadius.circular(10.0),
-                                child: SvgPicture.asset(
-                                  'assets/icons/youtube.svg',
-                                  color: RED_COLOR,
-                                  height: 13.0,
-                                  width: 13.0,
-                                  fit: BoxFit.cover,
-                                ),
+                  Expanded(
+                    child:
+                        Wrap(alignment: WrapAlignment.spaceAround, children: [
+                      isActuality == true
+                          ? const Text('')
+                          : ClipRRect(
+                              borderRadius: BorderRadius.circular(10.0),
+                              child: SvgPicture.asset(
+                                'assets/icons/youtube.svg',
+                                color: RED_COLOR,
+                                height: 13.0,
+                                width: 13.0,
+                                fit: BoxFit.cover,
                               ),
-                        const SizedBox(
-                          width: 5,
+                            ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      isActuality == true
+                          ? const AutoSizeText(
+                              'Par Rodrigue Ntengue',
+                              maxLines: 2,
+                              style: TextStyle(
+                                  color: GRAY_DEGRADE_2_COLOR,
+                                  fontSize: 8.5,
+                                  fontFamily: 'Poppins-light',
+                                  overflow: TextOverflow.ellipsis),
+                            )
+                          : AutoSizeText(
+                              post.source ?? '',
+                              maxLines: 2,
+                              style: const TextStyle(
+                                  color: GRAY_DEGRADE_2_COLOR,
+                                  fontSize: 8.5,
+                                  fontFamily: 'Poppins-light',
+                                  overflow: TextOverflow.ellipsis),
+                            ),
+                      const Padding(
+                        padding: EdgeInsets.all(6.0),
+                        child: Icon(
+                          Icons.face,
+                          color: GRAY_DEGRADE_2_COLOR,
+                          size: 4,
                         ),
-                        isActuality == true
-                            ? const AutoSizeText(
-                                'Par Rodrigue Ntengue',
-                                style: xsmallGray2,
-                              )
-                            : const AutoSizeText(
-                                'Youtube',
-                                style: xsmallGray2,
-                              ),
-                        const Padding(
-                          padding: EdgeInsets.all(6.0),
-                          child: Icon(
-                            Icons.face,
-                            color: GRAY_DEGRADE_2_COLOR,
-                            size: 4,
-                          ),
-                        ),
-                        isActuality == true
-                            ? const AutoSizeText(
-                                "Le 12-06-22",
-                                style: xsmallGray2,
-                              )
-                            : const AutoSizeText(
-                                "il y'a 2 min",
-                                style: xsmallGray2,
-                              ),
-                      ]),
+                      ),
+                      isActuality == true
+                          ? const AutoSizeText(
+                              'article.created_at',
+                              maxLines: 2,
+                              style: TextStyle(
+                                  color: GRAY_DEGRADE_2_COLOR,
+                                  fontSize: 8.5,
+                                  fontFamily: 'Poppins-light',
+                                  overflow: TextOverflow.ellipsis),
+                            )
+                          : const AutoSizeText(
+                              "il y'a 2 min",
+                              maxLines: 2,
+                              style: TextStyle(
+                                  color: GRAY_DEGRADE_2_COLOR,
+                                  fontSize: 8.5,
+                                  fontFamily: 'Poppins-light',
+                                  overflow: TextOverflow.ellipsis),
+                            ),
+                    ]),
+                  ),
                 ],
               ),
             )

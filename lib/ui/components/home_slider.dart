@@ -1,9 +1,12 @@
 // ignore_for_file: must_be_immutable
 
+import 'dart:math';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:la_taniere/ui/screens/home/home_viewmodel.dart';
+import 'package:la_taniere/utilities/utilities.dart';
 
 import '../../utilities/colors.dart';
 
@@ -39,9 +42,8 @@ class HomeSlider extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Container(
+        SizedBox(
           height: 350,
-          color: RED_COLOR,
           child: PageView.builder(
               itemCount: viewModel.images.length,
               pageSnapping: true,
@@ -63,14 +65,15 @@ class HomeSlider extends StatelessWidget {
             height: 200,
             width: screenSize.width,
             decoration: BoxDecoration(
-                borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10)),
                 gradient: LinearGradient(
-                  colors: [Colors.black54, Colors.black.withOpacity(0.5)],
-                  begin: Alignment.bottomCenter,
-                  end: const Alignment(1, -2),
-                )),
+              colors: [
+                Colors.black.withOpacity(0),
+                Colors.black.withOpacity(1),
+              ],
+              begin: const Alignment(0, 2.4),
+              end: const Alignment(0, -2.4),
+              transform: const GradientRotation(30),
+            )),
           ),
         ),
         Positioned(
@@ -113,79 +116,7 @@ class HomeSlider extends StatelessWidget {
                 const SizedBox(
                   height: 10,
                 ),
-                Container(
-                  width: screenSize.width,
-                  alignment: Alignment.centerLeft,
-                  child: Wrap(
-                      direction: Axis.horizontal,
-                      crossAxisAlignment: WrapCrossAlignment.start,
-                      children: const [
-                        Icon(
-                          Icons.remove_red_eye,
-                          color: WHITE_COLOR,
-                          size: 14,
-                        ),
-                        SizedBox(
-                          width: 4,
-                        ),
-                        Text(
-                          '1,8k Vues',
-                          style: TextStyle(
-                              color: WHITE_COLOR,
-                              fontSize: 11,
-                              fontFamily: 'Poppins-medium',
-                              overflow: TextOverflow.ellipsis),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(6.0),
-                          child: Icon(
-                            FontAwesomeIcons.stop,
-                            color: WHITE_COLOR,
-                            size: 3,
-                          ),
-                        ),
-                        Icon(
-                          FontAwesomeIcons.solidHeart,
-                          color: WHITE_COLOR,
-                          size: 14,
-                        ),
-                        SizedBox(
-                          width: 4,
-                        ),
-                        Text(
-                          '4,7k Likes',
-                          style: TextStyle(
-                              color: WHITE_COLOR,
-                              fontSize: 11,
-                              fontFamily: 'Poppins-medium',
-                              overflow: TextOverflow.ellipsis),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(6.0),
-                          child: Icon(
-                            FontAwesomeIcons.stop,
-                            color: WHITE_COLOR,
-                            size: 3,
-                          ),
-                        ),
-                        Icon(
-                          FontAwesomeIcons.shareFromSquare,
-                          color: WHITE_COLOR,
-                          size: 13,
-                        ),
-                        SizedBox(
-                          width: 4,
-                        ),
-                        Text(
-                          '1,6k Partages',
-                          style: TextStyle(
-                              color: WHITE_COLOR,
-                              fontSize: 11,
-                              fontFamily: 'Poppins-medium',
-                              overflow: TextOverflow.ellipsis),
-                        ),
-                      ]),
-                ),
+                Utilities().getLikeViewShares(context)
               ],
             )),
       ],

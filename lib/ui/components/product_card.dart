@@ -1,36 +1,52 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:la_taniere/models/product.dart';
 import 'package:la_taniere/utilities/colors.dart';
+import 'package:la_taniere/utilities/utilities.dart';
+import 'package:stacked_services/stacked_services.dart';
+
+import '../../app/app.router.dart';
 
 // ignore: must_be_immutable
 class ProductCard extends StatelessWidget {
-  const ProductCard({Key? key, required this.isNew}) : super(key: key);
-  final bool isNew;
+  Axis? axis;
+  Product product;
+  ProductCard({Key? key, this.axis, required this.product}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    NavigationService navigationService = NavigationService();
     Size _screenSize = MediaQuery.of(context).size;
     return GestureDetector(
-        onTap: () {},
+        onTap: () {
+          navigationService.navigateTo(Routes.productDetail,
+              arguments: ProductDetailArguments(product: product));
+        },
         child: Flex(
           direction: Axis.vertical,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
-                margin: const EdgeInsets.symmetric(horizontal: 10),
+                margin: axis == Axis.horizontal
+                    ? const EdgeInsets.symmetric(horizontal: 10)
+                    : const EdgeInsets.symmetric(vertical: 15),
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(10),
                       topRight: Radius.circular(10)),
                 ),
-                width: _screenSize.width / 1.25,
-                height: _screenSize.height / 3.8,
+                width: (axis == Axis.horizontal)
+                    ? (_screenSize.width / 1.25)
+                    : (_screenSize.width / 1.2),
+                height: 150,
                 child: Stack(
                   children: <Widget>[
                     Container(
-                      width: _screenSize.width / 1.25,
-                      height: _screenSize.height / 3.8,
+                      width: (axis == Axis.horizontal)
+                          ? (_screenSize.width / 1.25)
+                          : (_screenSize.width / 1.2),
+                      height: 150,
                       decoration: BoxDecoration(
                         borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(10),
@@ -53,42 +69,15 @@ class ProductCard extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
-                                isNew
-                                    ? Container(
-                                        height: 20,
-                                        width: 70,
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            color: BACKGROUND_COLOR),
-                                        alignment: Alignment.center,
-                                        child: const AutoSizeText(
-                                          "Nouveau",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              color: WHITE_COLOR,
-                                              fontSize: 10,
-                                              fontFamily: 'Poppins-light',
-                                              overflow: TextOverflow.ellipsis),
-                                        ))
-                                    : Container(
-                                        height: 20,
-                                        width: 60,
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            color: RED_COLOR),
-                                        alignment: Alignment.center,
-                                        child: const Text(
-                                          "25% OFF",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              color: WHITE_COLOR,
-                                              fontSize: 11,
-                                              fontFamily: 'Poppins-light',
-                                              overflow: TextOverflow.ellipsis),
-                                        ),
-                                      ),
+                                (product.reduction != 0 &&
+                                            product.status == 'nouveau' ||
+                                        product.reduction != 0 &&
+                                            product.status != 'nouveau')
+                                    ? Utilities()
+                                        .reductionBadge(product.reduction)
+                                    : product.status == 'nouveau'
+                                        ? Utilities().isNewBadge()
+                                        : const Text(""),
                               ],
                             ),
                           ),
@@ -107,9 +96,9 @@ class ProductCard extends StatelessWidget {
                                           color: GRAY_DEGRADE_2_COLOR,
                                           shape: BoxShape.circle),
                                       child: const Icon(
-                                        Icons.bookmark_sharp,
+                                        Icons.favorite,
                                         color: WHITE_COLOR,
-                                        size: 12,
+                                        size: 13,
                                       ),
                                     )),
                               ],
@@ -121,32 +110,37 @@ class ProductCard extends StatelessWidget {
                   ],
                 )),
             Container(
-              width: _screenSize.width / 1.25,
+              width: (axis == Axis.horizontal)
+                  ? (_screenSize.width / 1.25)
+                  : (_screenSize.width / 1.2),
               decoration: const BoxDecoration(
                 color: GRAY_COLOR,
                 borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(10),
                     bottomRight: Radius.circular(10)),
               ),
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 15),
               child: Flex(
                 direction: Axis.vertical,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   AutoSizeText(
-                    isNew ? "Accessoire" : "Shirt",
+                    // isNew ? "Accessoire" : "Shirt",
+                    product.name,
                     style: const TextStyle(
                         color: GRAY_DEGRADE_2_COLOR,
                         fontSize: 11,
                         fontFamily: 'Poppins-medium',
                         overflow: TextOverflow.ellipsis),
                     textAlign: TextAlign.left,
+                    maxLines: 1,
                   ),
-                  const AutoSizeText(
-                    "Maillot customisé",
-                    style: TextStyle(
+                  AutoSizeText(
+                    // "Maillot customisé",
+                    product.description,
+                    style: const TextStyle(
                         color: WHITE_COLOR,
-                        fontSize: 14,
+                        fontSize: 13,
                         fontWeight: FontWeight.w600,
                         fontFamily: 'Poppins-medium',
                         overflow: TextOverflow.ellipsis),
@@ -156,10 +150,10 @@ class ProductCard extends StatelessWidget {
                   Wrap(
                       crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
-                        !isNew
-                            ? const AutoSizeText(
-                                '20.000 XAF' ' / ',
-                                style: TextStyle(
+                        product.reduction != 0
+                            ? AutoSizeText(
+                                "${product.price.toStringAsFixed(0)} XAF" ' / ',
+                                style: const TextStyle(
                                     color: GRAY_DEGRADE_2_COLOR,
                                     wordSpacing: 2,
                                     fontSize: 13,
@@ -171,9 +165,11 @@ class ProductCard extends StatelessWidget {
                               )
                             : const Text(""),
                         AutoSizeText(
-                          "15.000 XAF",
+                          "${Utilities.getPriceAfterReduction(product.price, product.reduction)} XAF",
                           style: TextStyle(
-                              color: isNew ? WHITE_COLOR : RED_COLOR,
+                              color: product.reduction == 0
+                                  ? WHITE_COLOR
+                                  : RED_COLOR,
                               fontSize: 13,
                               fontFamily: 'Poppins-medium',
                               overflow: TextOverflow.ellipsis),

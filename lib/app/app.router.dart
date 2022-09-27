@@ -11,6 +11,10 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
+import '../models/article.dart';
+import '../models/product.dart';
+import '../ui/components/article_detail.dart';
+import '../ui/components/product_detail.dart';
 import '../ui/components/vertical_list.dart';
 import '../ui/screens/bigContainer/bigContainer_view.dart';
 import '../ui/screens/home/home_view.dart';
@@ -21,11 +25,15 @@ class Routes {
   static const String bigContainerView = '/big-container-view';
   static const String homeView = '/home-view';
   static const String verticalListPage = '/vertical-list-page';
+  static const String productDetail = '/product-detail';
+  static const String articleDetail = '/article-detail';
   static const all = <String>{
     splashScreenView,
     bigContainerView,
     homeView,
     verticalListPage,
+    productDetail,
+    articleDetail,
   };
 }
 
@@ -37,6 +45,8 @@ class StackedRouter extends RouterBase {
     RouteDef(Routes.bigContainerView, page: BigContainerView),
     RouteDef(Routes.homeView, page: HomeView),
     RouteDef(Routes.verticalListPage, page: VerticalListPage),
+    RouteDef(Routes.productDetail, page: ProductDetail),
+    RouteDef(Routes.articleDetail, page: ArticleDetail),
   ];
   @override
   Map<Type, StackedRouteFactory> get pagesMap => _pagesMap;
@@ -68,6 +78,27 @@ class StackedRouter extends RouterBase {
         builder: (context) => VerticalListPage(
           key: args.key,
           title: args.title,
+          data: args.data,
+        ),
+        settings: data,
+      );
+    },
+    ProductDetail: (data) {
+      var args = data.getArgs<ProductDetailArguments>(nullOk: false);
+      return CupertinoPageRoute<dynamic>(
+        builder: (context) => ProductDetail(
+          key: args.key,
+          product: args.product,
+        ),
+        settings: data,
+      );
+    },
+    ArticleDetail: (data) {
+      var args = data.getArgs<ArticleDetailArguments>(nullOk: false);
+      return CupertinoPageRoute<dynamic>(
+        builder: (context) => ArticleDetail(
+          key: args.key,
+          article: args.article,
         ),
         settings: data,
       );
@@ -89,7 +120,22 @@ class SplashScreenViewArguments {
 class VerticalListPageArguments {
   final Key? key;
   final String title;
-  VerticalListPageArguments({this.key, required this.title});
+  final StatelessWidget? data;
+  VerticalListPageArguments({this.key, required this.title, this.data});
+}
+
+/// ProductDetail arguments holder class
+class ProductDetailArguments {
+  final Key? key;
+  final Product product;
+  ProductDetailArguments({this.key, required this.product});
+}
+
+/// ArticleDetail arguments holder class
+class ArticleDetailArguments {
+  final Key? key;
+  final Article article;
+  ArticleDetailArguments({this.key, required this.article});
 }
 
 /// ************************************************************************
@@ -150,6 +196,7 @@ extension NavigatorStateExtension on NavigationService {
   Future<dynamic> navigateToVerticalListPage({
     Key? key,
     required String title,
+    StatelessWidget? data,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -158,7 +205,45 @@ extension NavigatorStateExtension on NavigationService {
   }) async {
     return navigateTo(
       Routes.verticalListPage,
-      arguments: VerticalListPageArguments(key: key, title: title),
+      arguments: VerticalListPageArguments(key: key, title: title, data: data),
+      id: routerId,
+      preventDuplicates: preventDuplicates,
+      parameters: parameters,
+      transition: transition,
+    );
+  }
+
+  Future<dynamic> navigateToProductDetail({
+    Key? key,
+    required Product product,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return navigateTo(
+      Routes.productDetail,
+      arguments: ProductDetailArguments(key: key, product: product),
+      id: routerId,
+      preventDuplicates: preventDuplicates,
+      parameters: parameters,
+      transition: transition,
+    );
+  }
+
+  Future<dynamic> navigateToArticleDetail({
+    Key? key,
+    required Article article,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return navigateTo(
+      Routes.articleDetail,
+      arguments: ArticleDetailArguments(key: key, article: article),
       id: routerId,
       preventDuplicates: preventDuplicates,
       parameters: parameters,
